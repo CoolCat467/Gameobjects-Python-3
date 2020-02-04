@@ -1,0 +1,17 @@
+Metadata-Version: 1.0
+Name: gameobjects
+Version: 1.0.1
+Summary: Classes for help wth game creation, now in Python 3
+Home-page: http://code.google.com/p/gameobjects/
+Author: Will McGugan
+Author-email: will@willmcgugan.com
+License: public domain
+Download-URL: http://code.google.com/p/gameobjects/downloads/list
+Description: UNKNOWN
+Platform: any
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python
+Classifier: License :: Public Domain
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Games/Entertainment
