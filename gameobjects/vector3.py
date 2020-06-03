@@ -429,7 +429,7 @@ class Vector3(object):
 
     def get_scalar_div(self, scalar):
 
-        x, y, z = self.scalar
+        x, y, z = scalar
         return self.from_floats(x / scalar, y / scalar, z / scalar)
 
     def get_vector_div(self, vector):
