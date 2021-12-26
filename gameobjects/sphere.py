@@ -1,14 +1,21 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# Sphere Module
+
+"Sphere module"
+
+__title__ = 'sphere'
+
 import vector3
 from util import format_number
 
-class Sphere(object):
+class Sphere:
+    __slots__ = '_position', '_radius'
     
     def __init__(self, position=(0,0,0), radius= 1.):
-        
         self._position = vector3.Vector3(position)
         self._radius = float(radius)
-        
-        
+    
     def get_position(self):
         return self._position
     def set_position(self, position):
@@ -20,51 +27,33 @@ class Sphere(object):
     def set_radius(self, radius):
         self._radius = float(radius)
     radius = property(get_radius, set_radius, None, "Radius of the sphere.")
-        
-        
-    def __str__(self):
-        
-        return "( position %s, radius %s )" % (self.position, format_number(self.radius))
     
+    def __str__(self):
+        return 'f( position {self.position}, radius {format_number(self.radius)} )'
     
     def __repr__(self):
-        
-        return "Sphere(%s, %s)" % (tuple(self.position), self.radius)
-        
-        
-    def __contains__(self, shape):
-        
-        try:
-            return shape.in_sphere(self)
-        except AttributeError:
-            raise TypeError( "No 'in_sphere' method supplied by %s" % type(shape) )
-            
-            
-    def contains(self, shape):
-        
-        return shape in self
-            
-            
-    def in_sphere(self, sphere):
-        
-        return self.position.get_distance(sphere.position) + self.radius <= sphere.radius
-        
-        
-    def intersects(self, shape):
-        
-        try:
-            return shape.intersects_sphere(self)
-        except AttributeError:
-            raise TypeError( "No 'intersects_sphere' method supplied by %s" % type(shape) )
+        return f'Sphere({tuple(self.position)}, {self.radius})'
     
+    def __contains__(self, shape):
+        if not hasattr(shape, 'in_sphere'):
+            raise TypeError( "No 'in_sphere' method supplied by %s" % type(shape) )
+        return shape.in_sphere(self)
+    
+    def contains(self, shape):
+        return shape in self
+    
+    def in_sphere(self, sphere):
+        return self.position.get_distance(sphere.position) + self.radius <= sphere.radius
+    
+    def intersects(self, shape):
+        if not hasattr(shape, 'intersects_sphere'):
+            raise TypeError( "No 'intersects_sphere' method supplied by %s" % type(shape) )
+        return shape.intersects_sphere(self)
     
     def intersects_sphere(self, sphere):
-        
         return self.position.get_distance(sphere.position) < self.radius + sphere.radius
-
         
 if __name__ == "__main__":
-    
     s1 = Sphere()
     s2 = Sphere( (1,1,1) )
     s3 = Sphere( radius=10 )
@@ -79,7 +68,7 @@ if __name__ == "__main__":
     
     big = Sphere(radius=1)
     small = Sphere(position=(.8, 0, 0), radius=.2)
-     
+    
     
     print(small, big)
     print(small in big)

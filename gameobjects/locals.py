@@ -2,4 +2,5 @@
 
 ( WRAP_REPEAT,
   WRAP_CLAMP,
-  WRAP_ERROR ) = range(3)
+  WRAP_ERROR,
+  WRAP_NONE ) = range(4)

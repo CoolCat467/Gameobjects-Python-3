@@ -2,16 +2,12 @@
 # -*- coding: utf-8 -*-
 # Vector Module
 
-"Vector module"
+"Game objects Vector module"
 
 # Programmed by CoolCat467
 
-__title__ = 'Vector'
+__title__ = 'Game objects Vector'
 __author__ = 'CoolCat467'
-__version__ = '0.0.0'
-_ver_major__ = 0
-_ver_minor__ = 0
-_ver_patch__ = 0
 
 import math
 from functools import wraps
@@ -25,7 +21,6 @@ def vmathop(function):
                 return function(self, rhs, *args, **kwargs)
             raise TypeError('Operand length is not same as own')
         return function(self, [rhs]*len(self), *args, **kwargs)
-##        raise AttributeError('Operand has no length attribute')
     return wrapped_op
 
 def simpleop(function):
@@ -86,11 +81,9 @@ class Vector:
         if not hasattr(dtype, '__getitem__'):
             raise TypeError('Data type class is not subscriptable!')
         if dims is None:
-##            self._v = tuple(args)
             self._v = self.dtype(args)
         else:
             args = args[:dims]
-##            self._v = tuple(list(args) + [0]*(dims-len(args)))
             self._v = self.dtype(list(args) + [0]*(dims-len(args)))
     
     def __repr__(self):
@@ -150,9 +143,7 @@ class Vector:
     def normalize(self):
         "Normalize this vector."
         mag = self.magnitude
-##        self._v = tuple(map(lambda x:x/mag, self._v))
         self._v = self.dtype(map(lambda x:x/mag, self._v))
-##        self._v = list(map(lambda x:x/mag, self._v))
         return self
     
     def normalized(self):
@@ -234,30 +225,12 @@ class Vector:
     @boolop('all')
     def __eq__(self, rhs):
         return self == rhs
-##        return self._v == rhs
     
     @vmathop
     @boolop('any')
     def __ne__(self, rhs):
         print((self, '!=', rhs))
         return self != rhs
-##        return self._v != rhs
-    
-##    @vmagop
-##    def __gt__(x, y):
-##        return x > y
-##    
-##    @vmagop
-##    def _ge__(x, y):
-##        return x >= y
-##    
-##    @vmagop
-##    def __lt__(x, y):
-##        return x < y
-##    
-##    @vmagop
-##    def __le__(x, y):
-##        return x <= y
     
     def __hash__(self):
         return hash(self._v)
@@ -269,7 +242,7 @@ class Vector:
             mag = 0
         else:
             mag = new_length / cmag
-##        self._v = (self * ([mag]*len(self)))._v
+##        self._v = (self * mag)._v
         return self * mag
     
     @onlylen(3)
@@ -299,14 +272,14 @@ class Vector1(Vector):
     "Vector1. Same as Vector, but stuck being 1d and has x attribute."
     _gameobjects_vector = 1
     def __init__(self, x=0, **kwargs):
-##        kwargs['dims'] = 1
+        kwargs['dims'] = 1
         if not 'dtype' in kwargs:
             kwargs['dtype'] = list
         super().__init__(x, **kwargs)
     
     @classmethod
     def from_iter(cls, iterable, dtype=list):
-        "Return Vector2 from iterable."
+        "Return Vector1 from iterable."
         nxt = iter(iterable).__next__
         return cls(nxt(), dtype=dtype)
     
@@ -389,6 +362,7 @@ class Vector1(Vector):
     def get_distance_to(self, point):
         "Return distance to point"
         return (point - self).magnitude
+    get_distance = get_distance_to
     
     def set(self, *args):
         for idx, val in enumerate(args):
@@ -398,7 +372,6 @@ class Vector1(Vector):
     
     def scalar_mul(self, scalar):
         self.__imul__(scalar)
-##        return self *= scalar
         return self
     vector_mul = scalar_mul
     
@@ -407,7 +380,6 @@ class Vector1(Vector):
     get_vector_mul = get_scalar_mul
     
     def scalar_div(self, scalar):
-##        return self /= scalar
         self.__idiv__(scalar)
         return self
     vector_div = scalar_div
@@ -427,7 +399,7 @@ class Vector2(Vector1):
     "Vector2. Same as Vector, but stuck being 2d and has x and y attributes."
     _gameobjects_vector = 2
     def __init__(self, x=0, y=0, **kwargs):
-##        kwargs['dims'] = 2
+        kwargs['dims'] = 2
         if not 'dtype' in kwargs:
             kwargs['dtype'] = list
         Vector.__init__(self, x, y, **kwargs)
@@ -450,14 +422,14 @@ class Vector3(Vector2):
     "Vector3. Same as Vector, but stuck being 3d and has x, y, and z attributes."
     _gameobjects_vector = 3
     def __init__(self, x=0, y=0, z=0, **kwargs):
-##        kwargs['dims'] = 3
+        kwargs['dims'] = 3
         if not 'dtype' in kwargs:
             kwargs['dtype'] = list
         Vector.__init__(self, x, y, z, **kwargs)
     
     @classmethod
     def from_iter(cls, iterable, dtype=list):
-        "Return Vector2 from iterable."
+        "Return Vector3 from iterable."
         nxt = iter(iterable).__next__
         return cls(nxt(), nxt(), nxt(), dtype=dtype)
     
@@ -473,14 +445,14 @@ class Vector4(Vector3):
     "Vector4. Same as Vector, but stuck being 4d and has x, y, z, and w attributes."
     _gameobjects_vector = 4
     def __init__(self, x=0, y=0, z=0, w=0, **kwargs):
-##        kwargs['dims'] = 4
+        kwargs['dims'] = 4
         if not 'dtype' in kwargs:
             kwargs['dtype'] = list
         Vector.__init__(self, x, y, z, w, **kwargs)
     
     @classmethod
     def from_iter(cls, iterable, dtype=list):
-        "Return Vector2 from iterable."
+        "Return Vector4 from iterable."
         nxt = iter(iterable).__next__
         return cls(nxt(), nxt(), nxt(), nxt(), dtype=dtype)
     

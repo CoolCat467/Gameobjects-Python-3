@@ -1,23 +1,27 @@
-from math import *
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# Color Module
+
+"Color module"
+
+__title__ = 'color'
+
 from util import format_number
 
-
-class ColorRGBA(object):
-
+class ColorRGBA:
+    "Color with red, green, blue, and alpha components."
     __slots__ = ('_c',)
-
-
+    
     def __init__(self, *args):
-
-        """Creates a color object."""
-
+        "Creates a color object."
+        
         if not args:
             self._c = [0.0, 0.0, 0.0, 1.0]
             return
-
+        
         if len(args) == 1:
             args = args[0]
-
+        
         if len(args) == 3:
             r, g, b = args
             self._c = [float(r), float(g), float(b), 1.0]
@@ -26,26 +30,23 @@ class ColorRGBA(object):
             r, g, b, a = args
             self._c = [float(r), float(g), float(b), float(a)]
             return
-
-        raise ValueError("0, 1, 3 or 4 values required")
-
+        
+        raise ValueError('0, 1, 3 or 4 values required')
+    
     def __str__(self):
-
-        return "(" + ", ".join(format_number(c) for c in self._c) + ")"
+        return '(' + ', '.join(format_number(c) for c in self._c) + ')'
         #return "(" + ", ".join(map(str, self._c)) + ")"
 
     def __repr__(self):
-
+        
         return "ColorRGBA(" + ", ".join(map(str, self._c)) + ")"
 
     @classmethod
     def black(cls):
-
-        """Create a color object representing black."""
-
-        c = cls.__new__(cls, object)
-        c._c = [0.0, 0.0, 0.0, 1.0]
-        return c
+        "Create a color object representing black."
+        self = cls.__new__(cls, object)
+        self._c = [0.0, 0.0, 0.0, 1.0]
+        return self
 
     @classmethod
     def white(cls):
@@ -996,10 +997,7 @@ _palette = {
     'lightgreen' : (0.564705882353, 0.933333333333, 0.564705882353),
 }
 
-
-
-if __name__ == "__main__":
-
+def test():
     c1 = Color(.5, .2, .8)
     c2 = Color(1., 0., .2)
     print(c1)
@@ -1010,3 +1008,6 @@ if __name__ == "__main__":
     print(c1('rrrgggbbbaaa'))
     print(Color.from_palette('magenta').rgba8)
     #palette.red += palette.blue
+
+if __name__ == "__main__":
+    test()
