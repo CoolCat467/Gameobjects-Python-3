@@ -72,11 +72,11 @@ class GameClock:
     
     def pause(self):
         "Pauses the Game Clock."
-        self.pause = True
+        self.paused = True
     
     def unpause(self):
         "Un-pauses the Game Clock."
-        self.pause = False
+        self.paused = False
     
     def get_real_time(self):
         """Returns the real time, as reported by the system clock.

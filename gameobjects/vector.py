@@ -229,7 +229,6 @@ class Vector:
     @vmathop
     @boolop('any')
     def __ne__(self, rhs):
-        print((self, '!=', rhs))
         return self != rhs
     
     def __hash__(self):
@@ -465,4 +464,4 @@ class Vector4(Vector3):
     w = property(_get_w, _set_w, doc='W component')
 
 if __name__ == '__main__':
-    print(f'{__title__} v{__version__}\nProgrammed by {__author__}.')
+    print(f'{__title__}\nProgrammed by {__author__}.')
