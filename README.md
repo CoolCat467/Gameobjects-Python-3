@@ -1,7 +1,9 @@
 # gameobjects
 
-Fork of https://code.google.com/archive/p/gameobjects
-Original Author: Will McGugan will@willmcgugan.com
+Fork of https://code.google.com/archive/p/gameobjects/downloads
+
+Original Author: Will McGugan <will@willmcgugan.com>
+
 
 Run the following to install localy
 
