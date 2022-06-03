@@ -11,11 +11,12 @@ from util import saturate
 
 class Grid:
     "Grid class"
-    def __init__( self,  node_factory,
-                         width,
-                         height,
-                         x_wrap = WRAP_ERROR,
-                         y_wrap = WRAP_ERROR ):
+    def __init__(self,
+                 node_factory,
+                 width,
+                 height,
+                 x_wrap = WRAP_ERROR,
+                 y_wrap = WRAP_ERROR):
         
         """Create a grid object.
 

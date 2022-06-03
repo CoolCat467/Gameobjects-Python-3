@@ -6,54 +6,71 @@
 
 __title__ = 'sphere'
 
+from typing import Iterable
+
 import vector3
-from util import format_number
 
 class Sphere:
-    __slots__ = '_position', '_radius'
-    
-    def __init__(self, position=(0,0,0), radius= 1.):
+    "Sphere class"
+    __slots__ = ('_position', '_radius')
+    def __init__(self, position: Iterable=(0,0,0), radius:int|float=1) -> None:
         self._position = vector3.Vector3(position)
-        self._radius = float(radius)
+        self._radius = radius
     
-    def get_position(self):
+    def get_position(self) -> vector3.Vector3:
+        "Return position of the center of this sphere"
         return self._position
-    def set_position(self, position):
-        self._position.set(*position)
+    
+    def set_position(self, position: Iterable) -> None:
+        x, y, z = position
+        self._position.x = x
+        self._position.y = y
+        self._position.z = z
+    
     position = property(get_position, set_position, None, "Position of sphere centre.")
     
-    def get_radius(self):
+    def get_radius(self) -> int|float:
+        "Return radius of this sphere"
         return self._radius
-    def set_radius(self, radius):
-        self._radius = float(radius)
+    
+    def set_radius(self, radius: int|float) -> None:
+        "Set the radius of this sphere"
+        self._radius = radius
+    
     radius = property(get_radius, set_radius, None, "Radius of the sphere.")
     
-    def __str__(self):
-        return 'f( position {self.position}, radius {format_number(self.radius)} )'
+    def __str__(self) -> str:
+        "Return text about self"
+        return f'( position {self.position}, radius {self.radius} )'
     
     def __repr__(self):
+        "Return representaton of self"
         return f'Sphere({tuple(self.position)}, {self.radius})'
     
-    def __contains__(self, shape):
+    def __contains__(self, shape) -> bool:
+        "Return if shape is in this sphere"
         if not hasattr(shape, 'in_sphere'):
             raise TypeError( "No 'in_sphere' method supplied by %s" % type(shape) )
         return shape.in_sphere(self)
     
-    def contains(self, shape):
-        return shape in self
+    contains = __contains__
     
-    def in_sphere(self, sphere):
+    def in_sphere(self, sphere: 'Sphere') -> bool:
+        "Return if sphere is in this sphere"
         return self.position.get_distance(sphere.position) + self.radius <= sphere.radius
     
-    def intersects(self, shape):
+    def intersects(self, shape) -> bool:
+        "Return if shape intersects this sphere"
         if not hasattr(shape, 'intersects_sphere'):
-            raise TypeError( "No 'intersects_sphere' method supplied by %s" % type(shape) )
+            raise TypeError(f"No 'intersects_sphere' method supplied by {type(shape)}")
         return shape.intersects_sphere(self)
     
-    def intersects_sphere(self, sphere):
+    def intersects_sphere(self, sphere: 'Sphere') -> bool:
+        "Return if sphere is in this sphere"
         return self.position.get_distance(sphere.position) < self.radius + sphere.radius
-        
-if __name__ == "__main__":
+
+def test():
+    "Do test"
     s1 = Sphere()
     s2 = Sphere( (1,1,1) )
     s3 = Sphere( radius=10 )
@@ -72,3 +89,6 @@ if __name__ == "__main__":
     
     print(small, big)
     print(small in big)
+
+if __name__ == '__main__':    
+    test()

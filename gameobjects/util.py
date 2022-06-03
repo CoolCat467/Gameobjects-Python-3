@@ -6,9 +6,11 @@
 
 __title__ = 'util'
 
+from typing import Iterable, Generator
+
 import math
 
-def format_number(n, accuracy=6):
+def format_number(n: int | float, accuracy: int=6) -> str:
     """Formats a number in a friendly manner
     (removes trailing zeros and unneccesary point."""
     
@@ -18,33 +20,33 @@ def format_number(n, accuracy=6):
         str_n = str_n.rstrip('0').rstrip('.')
     return str_n
 
-def lerp(a, b, i):
+def lerp(a: int | float, b: int | float, i: int | float) -> int | float:
     "Linear enterpolate from a to b."
     return a+(b-a)*i
 
-def range2d(range_x, range_y):
+def range2d(range_x: Iterable, range_y: Iterable) -> Iterable:
     "Creates a 2D range."
     range_x = list(range_x)
     return [ (x, y) for y in range_y for x in range_x ]
 
-def xrange2d(range_x, range_y):
+def xrange2d(range_x: Iterable, range_y: Iterable) -> Generator:
     "Iterates over a 2D range."
     range_x = list(range_x)
     for y in range_y:
         for x in range_x:
             yield (x, y)
 
-def saturate(value, low, high):
+def saturate(value: int | float, low: int | float, high: int | float) -> int | float:
     "Ensure value is within bounds, min of low, max of high."
     return min(max(value, low), high)
 
-def is_power_of_2(n):
+def is_power_of_2(n: int | float) -> bool:
     "Returns True if a value is a power of 2."
     return not math.log(n, 2) % 1
 
-def next_power_of_2(n):
+def next_power_of_2(n: int | float) -> int:
     "Returns the next power of 2 that is >= n"
-    return int(2 ** math.ceil(math.log(n, 2)))
+    return 2 ** math.ceil(math.log(n, 2))
 
 if __name__ == '__main__':
     print(list( xrange2d(range(3), range(3)) ))

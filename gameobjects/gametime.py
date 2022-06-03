@@ -4,98 +4,99 @@
 
 "Game Time Module"
 
-__title__ = "gametime"
+__title__ = 'gametime'
 
 import time as _time
 
 class GameClock:
     "Manages time in a game."
-    def __init__(self, game_ticks_per_second=20):
+    __slots__ = ('game_ticks_per_second', 'game_tick', 'speed',
+                 'clock_time', 'virtual_time', 'game_time',
+                 'game_frame_count', 'real_time_passed',
+                 'real_time', 'started', 'paused', 'between_frame',
+                 'fps', 'fps_sample_start_time', 'fps_sample_count',
+                 'average_fps')
+    def __init__(self, game_ticks_per_second: int|float=20):
         """Create a Game Clock object.
         
         game_ticks_per_second -- The number of logic frames a second.
         
         """
         
-        self.game_ticks_per_second = float(game_ticks_per_second)
-        self.game_tick = 1. / self.game_ticks_per_second        
-        self.speed = 1.        
+        self.game_ticks_per_second = game_ticks_per_second
+        self.game_tick = 1 / self.game_ticks_per_second        
+        self.speed = 1
         
-        self.clock_time = 0.
-        self.virtual_time = 0.
-        self.game_time = 0.
+        self.clock_time = 0
+        self.virtual_time = 0
+        self.game_time = 0
         self.game_frame_count = 0
-        self.real_time_passed = 0.
+        self.real_time_passed = 0
         
         self.real_time = self.get_real_time()
         self.started = False
         self.paused = False        
-        self.between_frame = 0.0
+        self.between_frame = 0
         
-        self.fps_sample_start_time = 0.0
+        self.fps = 0
+        self.fps_sample_start_time = 0
         self.fps_sample_count = 0
         self.average_fps = 0
     
-    
-    def start(self):
+    def start(self) -> None:
         "Starts the Game Clock. Must be called once."
-        
         if self.started:
             return
         
-        self.clock_time = 0.
-        self.virtual_time = 0.
-        self.game_time = 0.
+        self.clock_time = 0
+        self.virtual_time = 0
+        self.game_time = 0
         self.game_frame_count = 0
-        self.real_time_passed = 0.
+        self.real_time_passed = 0
         
         self.real_time = self.get_real_time()
         self.started = True
         
-        self.fps = 0.0
+        self.fps = 0
         self.fps_sample_start_time = self.real_time
         self.fps_sample_count = 0
         
-        
-    def set_speed(self, speed):
+    def set_speed(self, speed: int|float) -> None:
         """Sets the speed of the clock.
         
         speed -- A time factor (1 is normal speed, 2 is twice normal)
         
         """
-        assert isinstance(speed, float), "Must be a float"
-        
-        if speed < 0.0:
-            raise ValueError("Negative speeds not supported")
-        
+        if speed < 0:
+            raise ValueError('Negative speeds not supported')
         self.speed = speed
     
-    def pause(self):
+    def pause(self) -> None:
         "Pauses the Game Clock."
         self.paused = True
     
-    def unpause(self):
+    def unpause(self) -> None:
         "Un-pauses the Game Clock."
         self.paused = False
     
-    def get_real_time(self):
+    def get_real_time(self) -> float:# pylint: disable=no-self-use
         """Returns the real time, as reported by the system clock.
         This method may be overriden."""
 
         return _time.time()
     
-    def get_fps(self):
+    def get_fps(self) -> tuple[int, int|float]:
         """Retrieves the current frames per second as a tuple containing
         the fps and average fps over a second."""
         return self.fps, self.average_fps
     
-    def get_between_frame(self):
+    def get_between_frame(self) -> int|float:
         """Returns the interpolant between the previous game tick and the
         next game tick."""
         
         return self.between_frame
     
-    def update(self, max_updates = 0):
+    def update(self, max_updates: int = 0) -> tuple[int, int|float]:
         """Advances time, must be called once per frame. Yields tuples of
         game frame count and game time.
         
@@ -126,29 +127,30 @@ class GameClock:
         self.between_frame = ( self.virtual_time - self.game_time ) / self.game_tick
         
         if self.real_time_passed != 0:
-            self.fps = 1.0 / self.real_time_passed
+            self.fps = 1 / self.real_time_passed
         else:
-            self.fps = 0.0
+            self.fps = 0
         
         self.fps_sample_count += 1
         
-        if self.real_time - self.fps_sample_start_time > 1.0:
+        if self.real_time - self.fps_sample_start_time > 1:
             
             self.average_fps = self.fps_sample_count / (self.real_time - self.fps_sample_start_time)
             self.fps_sample_start_time = self.real_time
             self.fps_sample_count = 0
 
-def test():
-    t = GameClock(20) # AI is 20 frames per second
-    t.start()
+def test() -> None:
+    "Test game clock"
+    clock = GameClock(20) # AI is 20 frames per second
+    clock.start()
     
-    while t.virtual_time < 2.0:
-        for (frame_count, game_time) in t.update():            
-            print("Game frame #%i, %2.4f" % (frame_count, game_time))
+    while clock.virtual_time < 2:
+        for (frame_count, game_time) in clock.update():
+            print(f'Game frame #{frame_count}, {game_time:2.4f}')
         
-        virtual_time = t.virtual_time
-        print("\t%2.2f%% between game frame, time is %2.4f"%(t.between_frame*100., virtual_time))
-        
+        virtual_time = clock.virtual_time
+        print(f'\t{clock.between_frame*100:2.2f}% between game frame, time is {virtual_time:2.4f}')
+
         _time.sleep(0.2) # Simulate time to render frame
 
 if __name__ == '__main__':    

@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 
 ( WRAP_REPEAT,
   WRAP_CLAMP,
